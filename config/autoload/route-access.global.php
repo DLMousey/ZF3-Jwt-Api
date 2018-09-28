@@ -8,7 +8,7 @@ return [
         ],
         [
             'route' => '/refresh',
-            'protected' => true
+            'protected' => false
         ],
         [
             'route' => '/verify',

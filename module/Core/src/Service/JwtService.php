@@ -34,6 +34,7 @@ class JwtService
     {
         list($encodedHeader, $encodedPayload, $encodedSignature) = explode('.', $jwt);
 
+        $decodedPayload = json_decode(base64_decode($encodedPayload));
         $jwtData = $encodedHeader . '.' . $encodedPayload;
         $signature = $this->base64UrlDecode($encodedSignature);
 
@@ -41,7 +42,10 @@ class JwtService
 
         $newSignature = hash_hmac('sha256', $jwtData, $signingKey, true);
 
-        return hash_equals($signature, $newSignature);
+        $now = new DateTime();
+        $expiry = new DateTime('@' . $decodedPayload->exp);
+
+        return hash_equals($signature, $newSignature) && ($now < $expiry);
     }
 
     private function base64UrlEncode($data)
