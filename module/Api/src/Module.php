@@ -13,6 +13,9 @@ class Module
 
     public function onBootstrap(MvcEvent $event)
     {
-        die(dump(getallheaders()));
+        /**
+         * @todo - Check controller action against a mapping of routes and what roles you need to access them,
+         * validate JWT and hand off to action
+         */
     }
 }
