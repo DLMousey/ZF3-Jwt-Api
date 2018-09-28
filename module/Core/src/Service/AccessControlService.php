@@ -22,12 +22,22 @@ class AccessControlService
         }
 
         if(!$match['protected']) return true;
-
         if(!$jwt = $this->getJwt()) return false;
-
         if(!$this->getJwtService()->verifyJwt($jwt)) return false;
+        if(!$this->determineRoleMatch($jwt, $match)) return false;
 
         return true;
+    }
+
+    private function determineRoleMatch($jwt, $match)
+    {
+        if(!isset($match['roles']) || !count($match['roles']))
+        {
+            return true;
+        }
+
+        $components = $this->getJwtService()->deconstructJwt($jwt);
+        return $components['payload']->roles == $match['roles'];
     }
 
     private function getJwt()

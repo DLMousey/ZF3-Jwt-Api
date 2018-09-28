@@ -12,7 +12,8 @@ return [
         ],
         [
             'route' => '/verify',
-            'protected' => true
+            'protected' => true,
+            'roles' => ['user', 'administrator']
         ]
     ]
 ];

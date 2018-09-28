@@ -13,10 +13,17 @@ class JwtService
     {
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
 
+        $roles = [];
+        foreach($user->getRoles() as $role)
+        {
+            $roles[] = $role->getRole();
+        }
+
         $payload = json_encode([
             'exp' => $this->getExpiry(),
             'id' => $user->getId(),
-            'email' => $user->getEmail()
+            'email' => $user->getEmail(),
+            'roles' => $roles
         ]);
 
         $signingKey = $this->getJwtConfig()['signing_key'];
@@ -46,6 +53,18 @@ class JwtService
         $expiry = new DateTime('@' . $decodedPayload->exp);
 
         return hash_equals($signature, $newSignature) && ($now < $expiry);
+    }
+
+    public function deconstructJwt($jwt)
+    {
+        $parts = explode('.', $jwt);
+        $header = json_decode(base64_decode($parts[0]));
+        $payload = json_decode(base64_decode($parts[1]));
+
+        return [
+            'header' => $header,
+            'payload' => $payload
+        ];
     }
 
     private function base64UrlEncode($data)

@@ -1,0 +1,10 @@
+<doctrine-mapping>
+    <entity name="Core\Entity\Role" table="roles" repository-class="Core\Mapper\RoleMapper">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="role" type="string" />
+    </entity>
+</doctrine-mapping>

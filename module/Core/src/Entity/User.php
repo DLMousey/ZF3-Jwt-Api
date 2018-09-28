@@ -10,6 +10,8 @@ class User
 
     protected $password;
 
+    protected $roles;
+
     public function setId($id)
     {
         $this->id = $id;
@@ -41,5 +43,16 @@ class User
     public function getPassword()
     {
         return $this->password;
+    }
+
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+        return $this;
+    }
+
+    public function getRoles()
+    {
+        return $this->roles;
     }
 }
