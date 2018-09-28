@@ -1,0 +1,13 @@
+<doctrine-mapping>
+    <entity name="Core\Entity\RefreshToken" table="refresh_tokens" repository-class="Core\Mapper\RefreshTokenMapper">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="token" type="string" />
+        <field name="device" type="string" />
+
+        <many-to-one field="user" target-entity="Core\Entity\User" />
+    </entity>
+</doctrine-mapping>

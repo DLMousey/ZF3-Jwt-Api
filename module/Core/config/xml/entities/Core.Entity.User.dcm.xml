@@ -1,0 +1,11 @@
+<doctrine-mapping>
+    <entity name="Core\Entity\User" table="users" repository-class="Core\Mapper\UserMapper">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="email" type="string" />
+        <field name="password" type="string" />
+    </entity>
+</doctrine-mapping>

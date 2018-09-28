@@ -1,0 +1,18 @@
+<?php
+
+$dbParams = [
+    'database' => 'db',
+    'username' => 'user',
+    'password' => 'pass',
+    'hostname' => 'localhost'
+];
+
+$cliParams = [
+    'driver' => 'pdo_mysql',
+    'dbname' => $dbParams['database'],
+    'user' => $dbParams['username'],
+    'password' => $dbParams['password'],
+    'host' => $dbParams['hostname']
+];
+
+return [];
