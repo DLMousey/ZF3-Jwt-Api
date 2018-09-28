@@ -1,0 +1,7 @@
+<?php
+
+return [
+    'jwt' => [
+        'signing_key' => 'YourSecretKeyForSigningJwts'
+    ]
+];
