@@ -22,7 +22,7 @@ class JwtService
         $signingKey = $this->getJwtConfig()['signing_key'];
 
         $base64Header = $this->base64UrlEncode($header);
-        $base64Payload = $this->base64UrlEncode($header);
+        $base64Payload = $this->base64UrlEncode($payload);
 
         $signature = hash_hmac('sha256', $base64Header . "." . $base64Payload, $signingKey, true);
         $base64Signature = $this->base64UrlEncode($signature);
