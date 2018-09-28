@@ -6,6 +6,15 @@ class RefreshTokenService
 {
     protected $refreshTokenMapper;
 
+    public function find($user, $token, $device)
+    {
+        return $this->getRefreshTokenMapper()->findOneBy([
+            'user' => $user,
+            'token' => $token,
+            'device' => $device
+        ]);
+    }
+
     public function create($refreshToken)
     {
         return $this->getRefreshTokenMapper()->persist($refreshToken);

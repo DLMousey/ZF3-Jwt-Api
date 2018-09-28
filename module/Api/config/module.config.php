@@ -23,12 +23,22 @@ return [
                     ],
                 ],
             ],
+            'refresh' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/refresh',
+                    'defaults' => [
+                        'controller' => Controller\RefreshController::class
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\LoginController::class => Factory\LoginControllerFactory::class,
-            Controller\VerificationController::class => Factory\VerificationControllerFactory::class
+            Controller\VerificationController::class => Factory\VerificationControllerFactory::class,
+            Controller\RefreshController::class => Factory\RefreshControllerFactory::class
         ],
     ],
     'view_manager' => [

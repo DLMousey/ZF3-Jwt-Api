@@ -12,6 +12,8 @@ class RefreshToken
 
     protected $user;
 
+    protected $revoked;
+
     public function setId($id)
     {
         $this->id = $id;
@@ -54,6 +56,17 @@ class RefreshToken
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function setRevoked($revoked)
+    {
+        $this->revoked = $revoked;
+        return $this;
+    }
+
+    public function getRevoked()
+    {
+        return $this->revoked;
     }
 
     public function toArray()

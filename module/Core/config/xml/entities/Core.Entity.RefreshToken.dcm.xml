@@ -7,6 +7,7 @@
 
         <field name="token" type="string" />
         <field name="device" type="string" />
+        <field name="revoked" type="boolean" />
 
         <many-to-one field="user" target-entity="Core\Entity\User" />
     </entity>
