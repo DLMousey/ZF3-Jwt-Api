@@ -17,27 +17,38 @@ class JwtService
             'email' => $user->getEmail()
         ]);
 
-        /**
-         * Base64URL encode the header and payload, PHP doesn't have built in
-         * B64URL Support so we'll do it manually replacing invalid characters
-         */
-        $base64Header = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($header));
-        $base64Payload = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($payload));
+        $base64Header = $this->base64UrlEncode($header);
+        $base64Payload = $this->base64UrlEncode($header);
 
-        /**
-         * Create the hash for the signature
-         */
         $signature = hash_hmac('sha256', $base64Header . "." . $base64Payload, 'abc123', true);
+        $base64Signature = $this->base64UrlEncode($signature);
 
-        /**
-         * Do the same Base64 url encode on the signature
-         */
-        $base64Signature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($signature));
-
-        /**
-         * Concatenate the parts together and return
-         */
         return $base64Header . "." . $base64Payload . "." . $base64Signature;
+    }
+
+    public function verifyJwt($jwt)
+    {
+        list($encodedHeader, $encodedPayload, $encodedSignature) = explode('.', $jwt);
+
+        $jwtData = $encodedHeader . '.' . $encodedPayload;
+        $signature = $this->base64UrlDecode($encodedSignature);
+
+        $newSignature = hash_hmac('sha256', $jwtData, 'abc123', true);
+
+        return hash_equals($signature, $newSignature);
+    }
+
+    private function base64UrlEncode($data)
+    {
+        $safeData = strtr(base64_encode($data), '+/', '-_');
+        return rtrim($safeData, '=');
+    }
+
+    private function base64UrlDecode($data)
+    {
+        $unsafeData = strtr($data, '-_', '+/');
+        $paddedData = str_pad($unsafeData, strlen($data) % 4, '=', STR_PAD_RIGHT);
+        return base64_decode($paddedData);
     }
 
     private function getExpiry()
