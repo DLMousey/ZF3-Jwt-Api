@@ -15,6 +15,11 @@ class RefreshTokenService
         ]);
     }
 
+    public function findByUser($user)
+    {
+        return $this->getRefreshTokenMapper()->findOneByUser($user);
+    }
+
     public function create($refreshToken)
     {
         return $this->getRefreshTokenMapper()->persist($refreshToken);

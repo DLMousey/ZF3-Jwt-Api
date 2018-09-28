@@ -29,12 +29,15 @@ class LoginController extends AbstractRestfulController
 
         $token = $this->getJwtService()->generateJwt($user);
 
-        $refreshToken = new RefreshToken();
-        $refreshToken->setToken(base64_encode('abc123'));
-        $refreshToken->setDevice('main-app');
-        $refreshToken->setUser($user);
+        if(!$refreshToken = $this->getRefreshTokenService()->findByUser($user))
+        {
+            $refreshToken = new RefreshToken();
+            $refreshToken->setToken(base64_encode('abc123'));
+            $refreshToken->setDevice('main-app');
+            $refreshToken->setUser($user);
 
-        $refreshToken = $this->getRefreshTokenService()->create($refreshToken);
+            $refreshToken = $this->getRefreshTokenService()->create($refreshToken);
+        }
 
         return new JsonModel([
             'token' => $token,

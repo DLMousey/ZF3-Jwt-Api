@@ -20,12 +20,14 @@ return [
         'aliases' => [
             'core_user_service' => Service\UserService::class,
             'core_jwt_service' => Service\JwtService::class,
-            'core_refresh_token_service' => Service\RefreshTokenService::class
+            'core_refresh_token_service' => Service\RefreshTokenService::class,
+            'core_access_control_service' => Service\AccessControlService::class
         ],
         'factories' => [
             Service\UserService::class => Factory\UserServiceFactory::class,
             Service\JwtService::class => Factory\JwtServiceFactory::class,
-            Service\RefreshTokenService::class => Factory\RefreshTokenServiceFactory::class
+            Service\RefreshTokenService::class => Factory\RefreshTokenServiceFactory::class,
+            Service\AccessControlService::class => Factory\AccessControlServiceFactory::class
         ]
     ]
 ];
