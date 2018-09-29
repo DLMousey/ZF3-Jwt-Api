@@ -2,6 +2,8 @@
 
 namespace Api;
 
+use Zend\ServiceManager\Factory\InvokableFactory;
+
 return [
     'router' => [
         'routes' => [
@@ -32,13 +34,33 @@ return [
                     ],
                 ],
             ],
+            'protected' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/protected',
+                    'defaults' => [
+                        'controller' => Controller\ProtectedResourceController::class
+                    ],
+                ],
+            ],
+            'unprotected' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/unprotected',
+                    'defaults' => [
+                        'controller' => Controller\UnprotectedResourceController::class
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\LoginController::class => Factory\LoginControllerFactory::class,
             Controller\VerificationController::class => Factory\VerificationControllerFactory::class,
-            Controller\RefreshController::class => Factory\RefreshControllerFactory::class
+            Controller\RefreshController::class => Factory\RefreshControllerFactory::class,
+            Controller\UnprotectedResourceController::class => InvokableFactory::class,
+            Controller\ProtectedResourceController::class => InvokableFactory::class
         ],
     ],
     'view_manager' => [
