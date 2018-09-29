@@ -42,6 +42,11 @@ class AccessControlService
 
     private function getJwt()
     {
+        if(!array_key_exists('Authorization', getallheaders()))
+        {
+            return false;
+        }
+
         $headers = getallheaders();
         return $headers['Authorization'] ? str_replace('Bearer ', '', $headers['Authorization']) : false;
     }
