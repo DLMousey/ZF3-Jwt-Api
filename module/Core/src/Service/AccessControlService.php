@@ -7,14 +7,18 @@ class AccessControlService
     protected $routeGuardsConfig;
     protected $jwtService;
 
-    public function allowAccess($route)
+    /**
+     * @param $requestUri
+     * @return bool
+     */
+    public function allowAccess($requestUri)
     {
         $routes = $this->getRouteGuardsConfig();
         $match = null;
 
         foreach($routes as $guard)
         {
-            if($guard['route'] == $route)
+            if($guard['route'] == $requestUri)
             {
                 $match = $guard;
                 break;
@@ -29,17 +33,25 @@ class AccessControlService
         return true;
     }
 
-    private function determineRoleMatch($jwt, $match)
+    /**
+     * @param string $jwt
+     * @param array $matchedGuard
+     * @return bool
+     */
+    private function determineRoleMatch($jwt, $matchedGuard)
     {
-        if(!isset($match['roles']) || !count($match['roles']))
+        if(!isset($matchedGuard['roles']) || !count($matchedGuard['roles']))
         {
             return true;
         }
 
         $components = $this->getJwtService()->deconstructJwt($jwt);
-        return $components['payload']->roles == $match['roles'];
+        return $components['payload']->roles == $matchedGuard['roles'];
     }
 
+    /**
+     * @return bool|string
+     */
     private function getJwt()
     {
         if(!array_key_exists('Authorization', getallheaders()))
@@ -51,23 +63,37 @@ class AccessControlService
         return $headers['Authorization'] ? str_replace('Bearer ', '', $headers['Authorization']) : false;
     }
 
-    public function setRouteGuardsConfig($config)
+    /**
+     * @param array $config
+     * @return $this
+     */
+    public function setRouteGuardsConfig(array $config)
     {
         $this->routeGuardsConfig = $config;
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getRouteGuardsConfig()
     {
         return $this->routeGuardsConfig;
     }
 
-    public function setJwtService($jwtService)
+    /**
+     * @param JwtService $jwtService
+     * @return $this
+     */
+    public function setJwtService(JwtService $jwtService)
     {
         $this->jwtService = $jwtService;
         return $this;
     }
 
+    /**
+     * @return JwtService
+     */
     public function getJwtService()
     {
         return $this->jwtService;

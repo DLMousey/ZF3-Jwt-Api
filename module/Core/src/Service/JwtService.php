@@ -2,6 +2,7 @@
 
 namespace Core\Service;
 
+use Core\Entity\User;
 use DateInterval;
 use DateTime;
 
@@ -11,7 +12,11 @@ class JwtService
 {
     protected $jwtConfig;
 
-    public function generateJwt($user)
+    /**
+     * @param User $user
+     * @return string
+     */
+    public function generateJwt(User $user)
     {
         $signingKey = $this->getJwtConfig()['signing_key'];
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
@@ -38,6 +43,10 @@ class JwtService
         return $base64Header . "." . $base64Payload . "." . $base64Signature;
     }
 
+    /**
+     * @param string $jwt
+     * @return bool
+     */
     public function verifyJwt($jwt)
     {
         $signingKey = $this->getJwtConfig()['signing_key'];
@@ -55,6 +64,10 @@ class JwtService
         return hash_equals($signature, $newSignature) && ($now < $expiry);
     }
 
+    /**
+     * @param $jwt
+     * @return array
+     */
     public function deconstructJwt($jwt)
     {
         $parts = explode('.', $jwt);
@@ -67,19 +80,10 @@ class JwtService
         ];
     }
 
-    private function base64UrlEncode($data)
-    {
-        $safeData = strtr(base64_encode($data), '+/', '-_');
-        return rtrim($safeData, '=');
-    }
-
-    private function base64UrlDecode($data)
-    {
-        $unsafeData = strtr($data, '-_', '+/');
-        $paddedData = str_pad($unsafeData, strlen($data) % 4, '=', STR_PAD_RIGHT);
-        return base64_decode($paddedData);
-    }
-
+    /**
+     * @return int
+     * @throws \Exception
+     */
     private function getExpiry()
     {
         $dt = new DateTime();
@@ -88,12 +92,19 @@ class JwtService
         return $dt->getTimestamp();
     }
 
-    public function setJwtConfig($config)
+    /**
+     * @param array $jwtConfig
+     * @return $this
+     */
+    public function setJwtConfig(array $jwtConfig)
     {
-        $this->jwtConfig = $config;
+        $this->jwtConfig = $jwtConfig;
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getJwtConfig()
     {
         return $this->jwtConfig;

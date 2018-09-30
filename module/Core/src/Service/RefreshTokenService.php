@@ -2,10 +2,19 @@
 
 namespace Core\Service;
 
+use Core\Entity\RefreshToken;
+use Core\Mapper\RefreshTokenMapper;
+
 class RefreshTokenService
 {
     protected $refreshTokenMapper;
 
+    /**
+     * @param string $user
+     * @param string $token
+     * @param string $device
+     * @return object
+     */
     public function find($user, $token, $device)
     {
         return $this->getRefreshTokenMapper()->findOneBy([
@@ -15,22 +24,37 @@ class RefreshTokenService
         ]);
     }
 
+    /**
+     * @param $user
+     * @return RefreshToken
+     */
     public function findByUser($user)
     {
         return $this->getRefreshTokenMapper()->findOneByUser($user);
     }
 
-    public function create($refreshToken)
+    /**
+     * @param RefreshToken $refreshToken
+     * @return mixed
+     */
+    public function create(RefreshToken $refreshToken)
     {
         return $this->getRefreshTokenMapper()->persist($refreshToken);
     }
 
-    public function setRefreshTokenMapper($mapper)
+    /**
+     * @param RefreshTokenMapper $mapper
+     * @return $this
+     */
+    public function setRefreshTokenMapper(RefreshTokenMapper $mapper)
     {
         $this->refreshTokenMapper = $mapper;
         return $this;
     }
 
+    /**
+     * @return RefreshTokenMapper
+     */
     public function getRefreshTokenMapper()
     {
         return $this->refreshTokenMapper;
