@@ -13,10 +13,12 @@ class AccessControlServiceFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $config = $container->get('config')['route-guards'];
+        $accessControlConfig = $container->get('config')['access-control'];
+        $missingAclEntryBehaviour = $container->get('config')['missing-access-control-behaviour'];
 
         $service = new AccessControlService();
-        $service->setRouteGuardsConfig($config);
+        $service->setAccessControlList($accessControlConfig);
+        $service->setMissingAclEntryBehaviour($missingAclEntryBehaviour);
         $service->setJwtService($container->get('core_jwt_service'));
 
         return $service;

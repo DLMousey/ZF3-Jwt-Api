@@ -4,7 +4,8 @@ namespace Core\Service;
 
 class AccessControlService
 {
-    protected $routeGuardsConfig;
+    protected $missingAclEntryBehaviour;
+    protected $accessControlList;
     protected $jwtService;
 
     /**
@@ -13,16 +14,21 @@ class AccessControlService
      */
     public function allowAccess($requestUri)
     {
-        $routes = $this->getRouteGuardsConfig();
+        $aclEntries = $this->getAccessControlList();
         $match = null;
 
-        foreach($routes as $guard)
+        foreach($aclEntries as $acl)
         {
-            if($guard['route'] == $requestUri)
+            if($acl['route'] == $requestUri)
             {
-                $match = $guard;
+                $match = $acl;
                 break;
             }
+        }
+
+        if($match == null)
+        {
+            return $this->getMissingAclEntryBehaviour();
         }
 
         if(!$match['protected']) return true;
@@ -64,21 +70,39 @@ class AccessControlService
     }
 
     /**
-     * @param array $config
+     * @param int $missingAclEntryBehaviour
      * @return $this
      */
-    public function setRouteGuardsConfig(array $config)
+    public function setMissingAclEntryBehaviour($missingAclEntryBehaviour)
     {
-        $this->routeGuardsConfig = $config;
+        $this->missingAclEntryBehaviour = $missingAclEntryBehaviour;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMissingAclEntryBehaviour()
+    {
+        return $this->missingAclEntryBehaviour;
+    }
+
+    /**
+     * @param array $accessControlList
+     * @return $this
+     */
+    public function setAccessControlList(array $accessControlList)
+    {
+        $this->accessControlList = $accessControlList;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getRouteGuardsConfig()
+    public function getAccessControlList()
     {
-        return $this->routeGuardsConfig;
+        return $this->accessControlList;
     }
 
     /**

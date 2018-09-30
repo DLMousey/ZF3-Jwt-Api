@@ -57,5 +57,11 @@ return [
         'strategies' => [
             'ViewJsonStrategy'
         ]
+    ],
+    'access-control' => [
+        ['route' => '/refresh', 'protected' => false],
+        ['route' => '/login', 'protected' => false],
+        ['route' => '/unprotected', 'protected' => false],
+        ['route' => '/protected', 'protected' => true]
     ]
 ];
