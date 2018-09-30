@@ -13,8 +13,10 @@ class RefreshController extends AbstractRestfulController
 
     public function create($data)
     {
-        $jwt = $data['token'];
-        $refreshToken = $data['refresh_token'];
+        $headers = getallheaders();
+
+        $jwt = str_replace('Bearer ', '', $headers['Authorization']);
+        $refreshToken = $headers['X-Refresh-Token'];
 
         $parts = explode('.', $jwt);
         $payload = json_decode(base64_decode($parts[1]));
@@ -25,11 +27,11 @@ class RefreshController extends AbstractRestfulController
         if($refreshTokenEntity == null || $refreshTokenEntity->getRevoked())
         {
             $this->getResponse()->setStatusCode(401);
-            return new JsonModel();
+            return new JsonModel(['error' => 'Refresh token missing']);
         }
 
         $newJwt = $this->getJwtService()->generateJwt($user);
-
+        
         return new JsonModel([
             'token' => $newJwt,
             'refresh_token' => $refreshToken
