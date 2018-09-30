@@ -52,8 +52,8 @@ class JwtService
         $signingKey = $this->getJwtConfig()['signing_key'];
         list($encodedHeader, $encodedPayload, $encodedSignature) = explode('.', $jwt);
 
-        $decodedPayload = json_decode(base64_decode($encodedPayload));
-        $signature = base64_decode($encodedSignature);
+        $decodedPayload = json_decode(Base64Utility::UrlDecode($encodedPayload));
+        $signature = Base64Utility::UrlDecode($encodedSignature);
         $jwtData = $encodedHeader . '.' . $encodedPayload;
 
         $newSignature = hash_hmac('sha256', $jwtData, $signingKey, true);
