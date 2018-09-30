@@ -33,7 +33,8 @@ class Module
 
         $res = $event->getResponse();
         $res->setStatusCode(401);
-        $res->setContent('Not Authorised');
+        $res->getHeaders()->addHeaderLine('Content-Type', 'application/json');
+        $res->setContent(json_encode(['error' => 'Not Authorised']));
 
         return $res;
     }
