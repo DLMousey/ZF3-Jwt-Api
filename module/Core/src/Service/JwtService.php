@@ -5,12 +5,15 @@ namespace Core\Service;
 use DateInterval;
 use DateTime;
 
+use Core\Utility\Base64Utility;
+
 class JwtService
 {
     protected $jwtConfig;
 
     public function generateJwt($user)
     {
+        $signingKey = $this->getJwtConfig()['signing_key'];
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
 
         $roles = [];
@@ -26,26 +29,23 @@ class JwtService
             'roles' => $roles
         ]);
 
-        $signingKey = $this->getJwtConfig()['signing_key'];
-
-        $base64Header = $this->base64UrlEncode($header);
-        $base64Payload = $this->base64UrlEncode($payload);
+        $base64Header = Base64Utility::UrlEncode($header);
+        $base64Payload = Base64Utility::UrlEncode($payload);
 
         $signature = hash_hmac('sha256', $base64Header . "." . $base64Payload, $signingKey, true);
-        $base64Signature = $this->base64UrlEncode($signature);
+        $base64Signature = Base64Utility::UrlEncode($signature);
 
         return $base64Header . "." . $base64Payload . "." . $base64Signature;
     }
 
     public function verifyJwt($jwt)
     {
+        $signingKey = $this->getJwtConfig()['signing_key'];
         list($encodedHeader, $encodedPayload, $encodedSignature) = explode('.', $jwt);
 
         $decodedPayload = json_decode(base64_decode($encodedPayload));
+        $signature = base64_decode($encodedSignature);
         $jwtData = $encodedHeader . '.' . $encodedPayload;
-        $signature = $this->base64UrlDecode($encodedSignature);
-
-        $signingKey = $this->getJwtConfig()['signing_key'];
 
         $newSignature = hash_hmac('sha256', $jwtData, $signingKey, true);
 
