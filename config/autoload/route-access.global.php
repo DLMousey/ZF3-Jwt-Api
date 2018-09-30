@@ -18,10 +18,5 @@ return [
             'route' => '/refresh',
             'protected' => false
         ],
-        [
-            'route' => '/verify',
-            'protected' => true,
-            'roles' => ['user', 'administrator']
-        ]
     ]
 ];

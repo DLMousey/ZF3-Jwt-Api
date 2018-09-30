@@ -16,15 +16,6 @@ return [
                     ],
                 ],
             ],
-            'verify' => [
-                'type' => 'literal',
-                'options' => [
-                    'route' => '/verify',
-                    'defaults' => [
-                        'controller' => Controller\VerificationController::class
-                    ],
-                ],
-            ],
             'refresh' => [
                 'type' => 'literal',
                 'options' => [
@@ -57,7 +48,6 @@ return [
     'controllers' => [
         'factories' => [
             Controller\LoginController::class => Factory\LoginControllerFactory::class,
-            Controller\VerificationController::class => Factory\VerificationControllerFactory::class,
             Controller\RefreshController::class => Factory\RefreshControllerFactory::class,
             Controller\UnprotectedResourceController::class => InvokableFactory::class,
             Controller\ProtectedResourceController::class => InvokableFactory::class
