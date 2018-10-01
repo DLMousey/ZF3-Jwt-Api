@@ -18,7 +18,9 @@ This repo is supposed to provide a concrete example of how JWTs have been implem
 
 This repo contains the API portion of the concrete example, It's a Zend Framework 3 application designed to be used with a boggo standard MySQL/MariaDB database via Doctrine. I could've just had single PHP scripts for creating, validating and refreshing JWTs but then i'd just be contributing to the problem.
 
-There will eventually be a companion repo to this one containing an Angular application that hits this API for all it's JWT...ey needs.
+~~There will eventually be a companion repo to this one containing an Angular application that hits this API for all it's JWT...ey needs.~~
+
+There's also a companion Angular 6 app available in [this repo](https://github.com/DLMousey/ZF3-Jwt-Api-Client)
 
 The logic around creating and verifying these things isn't the problem, it's how it all fits into the bigger picture that's the issue so that's what i'm trying to create here. 
 
