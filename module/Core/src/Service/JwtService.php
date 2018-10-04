@@ -19,7 +19,10 @@ class JwtService
     public function generateJwt(User $user)
     {
         $signingKey = $this->getJwtConfig()['signing_key'];
-        $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
+        $header = json_encode([
+            'typ' => $this->getJwtConfig()['typ'],
+            'alg' => $this->getJwtConfig()['alg']
+        ]);
 
         $roles = [];
         foreach($user->getRoles() as $role)

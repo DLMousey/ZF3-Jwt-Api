@@ -1,7 +1,10 @@
 <?php
 
 return [
-    'jwt' => [
-        'signing_key' => 'YourSecretKeyForSigningJwts'
-    ]
+    'jwt'                              => [
+        'signing_key'   => 'YourSecretKeyForSigningJwts',
+        'typ'           => 'JWT',
+        'alg'           => 'HS256'
+    ],
+    'access-control'                   => []
 ];
