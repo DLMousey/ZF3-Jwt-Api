@@ -5,3 +5,16 @@ zf:
    - "8080:80"
   volumes:
    - .:/var/www
+  links:
+   - mysql
+mysql:
+  image: mysql
+  command: --default-authentication-plugin=mysql_native_password
+  restart: always
+  ports:
+   - 13306:3306
+  environment:
+   MYSQL_DATABASE: zend_docker
+   MYSQL_USER: app
+   MYSQL_PASSWORD: password
+   MYSQL_ROOT_PASSWORD: password
